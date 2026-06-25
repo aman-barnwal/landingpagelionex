@@ -69,7 +69,7 @@ def home():
     return app.send_static_file("index.html")
 
 
-@app.route("/reserve", methods=["POST"])
+@app.route("/api/reserve", methods=["POST"])
 def reserve():
 
     name = request.form.get("name", "").strip()
