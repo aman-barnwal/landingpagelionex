@@ -4,11 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!form) return;
 
-    const messageBox =
-        document.getElementById("waitlist-message");
+    const messageBox = document.getElementById("waitlist-message");
 
-    const submitBtn =
-        form.querySelector("button");
+    const submitBtn = form.querySelector("button");
 
     form.addEventListener("submit", async (e) => {
 
@@ -23,23 +21,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const formData = new FormData(form);
 
-            const response = await fetch("/reserve", {
+            const response = await fetch("/api/reserve", {
+
                 method: "POST",
+
                 body: formData
+
             });
 
             const data = await response.json();
 
-            if (data.success) {
+            if (response.ok && data.success) {
 
                 messageBox.innerHTML = `
                     <div class="success-box">
+
                         <strong>🎉 Welcome to Lionex Early Access</strong>
+
                         <br><br>
-                        Your username <strong>@${formData.get("username")}</strong>
+
+                        Your username
+                        <strong>@${formData.get("username")}</strong>
                         has been successfully reserved.
+
+                        <br><br>
+
+                        A beautiful confirmation email has been sent to your inbox.
+
                         <br>
-                        We'll notify you when Lionex launches.
+
+                        We'll notify you when Lionex officially launches.
+
                     </div>
                 `;
 
@@ -49,19 +61,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 messageBox.innerHTML = `
                     <div class="error-box">
-                        ❌ ${data.message}
+
+                        ❌ ${data.message || "Something went wrong."}
+
                     </div>
                 `;
+
             }
 
         } catch (error) {
 
-            console.error(error);
+            console.error("Request Error:", error);
 
             messageBox.innerHTML = `
                 <div class="error-box">
-                    ❌ Unable to connect to the server.
-                    Please try again later.
+
+                    ❌ Unable to connect to the Lionex server.
+
+                    <br>
+
+                    Please try again in a few moments.
+
                 </div>
             `;
 
