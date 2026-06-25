@@ -1,0 +1,5 @@
+Flask==3.1.1
+gunicorn==23.0.0
+python-dotenv==1.1.1
+supabase==2.31.0
+resend==2.13.1
