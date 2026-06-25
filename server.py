@@ -1,8 +1,11 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 import sqlite3
-import os
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    static_folder=".",
+    static_url_path=""
+)
 
 DB_FILE = "users.db"
 
@@ -26,7 +29,7 @@ def init_db():
 
 @app.route("/")
 def home():
-    return send_from_directory(".", "index.html")
+    return app.send_static_file("index.html")
 
 
 @app.route("/reserve", methods=["POST"])
@@ -35,26 +38,6 @@ def reserve():
     name = request.form.get("name", "").strip()
     email = request.form.get("email", "").strip()
     username = request.form.get("username", "").strip().lower()
-
-    reserved = [
-        "admin",
-        "lionex",
-        "support",
-        "official",
-        "system",
-        "myai",
-        "atlas",
-        "nova",
-        "rogue",
-        "twinkle",
-        "solace"
-    ]
-
-    if username in reserved:
-        return jsonify({
-            "success": False,
-            "message": "Reserved username"
-        })
 
     try:
 
